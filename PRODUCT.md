@@ -24,6 +24,8 @@ A personal portfolio for Charlie McNabb, a third-year computer science student a
 
 The projects are real, working systems software: a Windows disk cleaner that reads the NTFS Master File Table directly, a PC-to-laptop game streaming app, and a Minecraft fusion reactor controller. The portfolio shows each one working instead of describing skills in the abstract.
 
+Confirmed thesis (2026-10-30): careful systems software and feedback controllers. The Fusion Reactor Controller is framed as control-loop work, which is the evidence for Charlie's AI and robotics focus.
+
 ## Capabilities and Constraints
 
 - Projects shown, in order: WinFastCleaner (Rust, public, v0.1.0 release), ScreenLink (Rust + Tauri + TypeScript, **private source**: never link to its repository), Fusion Reactor Controller (Lua, public).

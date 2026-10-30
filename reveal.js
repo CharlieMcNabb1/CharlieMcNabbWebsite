@@ -1,5 +1,6 @@
-// Adds .in to .reveal elements once as they scroll into view, and toggles .live on
-// demo cards each time they enter or leave so their demos replay. CSS animates the rest.
+// Adds .in to .reveal elements once as they scroll into view. Demo cards get .live when
+// they scroll in from below and lose it only when they drop back out below, so scrolling
+// up shows finished demos and scrolling down again replays them. CSS animates the rest.
 const motion = matchMedia('(prefers-reduced-motion: no-preference)').matches;
 
 function countUp(el) {
@@ -26,11 +27,13 @@ document.querySelectorAll('.reveal').forEach((el) => reveal.observe(el));
 const live = new IntersectionObserver((entries) => {
   for (const e of entries) {
     const card = e.target;
+    const below = e.boundingClientRect.top > 0;
     if (e.intersectionRatio >= 0.3 && !card.classList.contains('live')) {
       card.classList.add('live');
       if (motion) card.querySelectorAll('[data-count]').forEach(countUp);
     } else if (!e.isIntersecting) {
-      card.classList.remove('live');
+      // Above the viewport (e.g. page opened at an anchor): show it finished, no replay.
+      card.classList.toggle('live', !below);
     }
   }
 }, { threshold: [0, 0.3] });

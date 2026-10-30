@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Charlie McNabb</title>
-  <meta name="description" content="Projects by Charlie McNabb, computer science student at Colorado School of Mines.">
+  <meta name="description" content="Charlie McNabb builds careful systems software and feedback controllers. Computer science student at Colorado School of Mines.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -13,6 +13,8 @@
   <script src="reveal.js" defer></script>
 </head>
 <body>
+  <a class="skip" href="#projects">Skip to projects</a>
+
   <nav class="wrap nav">
     <a class="wordmark" href="#top">Charlie McNabb</a>
     <div class="nav-links">
@@ -22,19 +24,12 @@
   </nav>
 
   <header class="wrap hero" id="top">
-    <div class="hero-text">
-      <h1 class="reveal" style="--i:0">I build fast, careful software for Windows, games and home networks</h1>
-      <p class="lede reveal" style="--i:1">Third-year computer science student at Colorado School of Mines, focused on AI and robotics.</p>
-      <div class="actions reveal" style="--i:2">
-        <a class="btn btn-primary" href="#projects">See projects</a>
-        <a class="btn" href="https://github.com/CharlieMcNabb1">GitHub</a>
-      </div>
+    <h1 class="reveal" style="--i:0">I build careful systems software and feedback controllers</h1>
+    <p class="lede reveal" style="--i:1">Third-year computer science student at Colorado School of Mines, focused on AI and robotics. Below: a disk cleaner, a game streaming app and a reactor control loop.</p>
+    <div class="actions reveal" style="--i:2">
+      <a class="btn btn-primary" href="#projects">See projects</a>
+      <a class="btn" href="https://github.com/CharlieMcNabb1">GitHub</a>
     </div>
-    <ol class="index reveal" style="--i:3" aria-label="Projects">
-      <li><a href="#winfastcleaner"><span class="name">WinFastCleaner</span><span class="meta">Rust</span></a></li>
-      <li><a href="#screenlink"><span class="name">ScreenLink</span><span class="meta">Rust · Tauri</span></a></li>
-      <li><a href="#fusion-reactor"><span class="name">Fusion Reactor Controller</span><span class="meta">Lua</span></a></li>
-    </ol>
   </header>
 
   <main class="wrap" id="projects">
@@ -44,93 +39,118 @@
         <p class="stack">Rust · Windows 10/11 · open source</p>
         <p class="pitch">A fast, safe disk cleaner for Windows and an open-source alternative to CCleaner. It shows exactly what it will delete before it deletes anything.</p>
         <ul class="points">
-          <li>Reads the NTFS Master File Table directly, so a full drive scan takes seconds</li>
+          <li>Reads the drive's own file index (the NTFS Master File Table) directly, so a full scan takes seconds</li>
           <li>Every cleanable item is color-coded by risk, and nothing personal is selected automatically</li>
           <li>Deleted files go to a recovery bin you can restore from</li>
           <li>No ads, no accounts, no telemetry, and it works fully offline</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner">Source</a>
-          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner/releases/tag/v0.1.0">Download v0.1.0</a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner">Source<span class="sr-only"> code for WinFastCleaner</span></a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner/releases/tag/v0.1.0">Download <span class="sr-only">WinFastCleaner </span>v0.1.0</a>
         </div>
       </div>
-      <div class="preview" role="img" aria-label="Illustration of WinFastCleaner's clean preview: five safe items on drive C, 2.31 GB ready to clean">
-        <div class="pv-head"><span>Clean preview</span><span>Drive C: · NTFS</span></div>
-        <div class="scan"><span>Reading Master File Table</span><div class="bar"><i></i></div></div>
-        <ul class="rows">
-          <li style="--i:0"><span class="dot"></span>Temporary files<span>1.42 GB</span></li>
-          <li style="--i:1"><span class="dot"></span>Internet cache<span>612 MB</span></li>
-          <li style="--i:2"><span class="dot"></span>Thumbnail cache<span>148 MB</span></li>
-          <li style="--i:3"><span class="dot"></span>Program crash dumps<span>96 MB</span></li>
-          <li style="--i:4"><span class="dot"></span>Error reports<span>31 MB</span></li>
-        </ul>
-        <div class="pv-foot">
-          <div><span class="label">Ready to clean</span><span class="figure"><span data-count>2.31</span> GB</span></div>
-          <span class="label">Recovery bin on</span>
+      <figure class="demo">
+        <div class="preview" role="img" aria-label="Illustration of WinFastCleaner's clean preview with sample values: five safe items on drive C, 2.31 GB ready to clean">
+          <div class="pv-head"><span>Clean preview</span><span>Drive C: · NTFS</span></div>
+          <div class="scan"><span>Reading Master File Table</span><div class="bar"><i></i></div></div>
+          <ul class="rows">
+            <li style="--i:0"><span class="dot"></span>Temporary files<span>1.42 GB</span></li>
+            <li style="--i:1"><span class="dot"></span>Internet cache<span>612 MB</span></li>
+            <li style="--i:2"><span class="dot"></span>Thumbnail cache<span>148 MB</span></li>
+            <li style="--i:3"><span class="dot"></span>Program crash dumps<span>96 MB</span></li>
+            <li style="--i:4"><span class="dot"></span>Error reports<span>31 MB</span></li>
+          </ul>
+          <div class="pv-foot">
+            <div><span class="label">Ready to clean</span><span class="figure"><span data-count>2.31</span> GB</span></div>
+            <span class="label">Recovery bin on</span>
+          </div>
         </div>
-      </div>
+        <figcaption>Fig. 1 · Illustration with sample values</figcaption>
+      </figure>
     </section>
 
     <section class="project" id="screenlink">
       <div class="project-text">
         <h2>ScreenLink</h2>
-        <p class="stack">Rust · Tauri · TypeScript · private source</p>
-        <p class="pitch">Streams a gaming PC's screen to a laptop on the same home network at 1080p and up to 240 Hz. One app installs on both machines and drives Sunshine and Moonlight for you.</p>
+        <p class="stack">Rust · Tauri · TypeScript</p>
+        <p class="pitch">Streams a gaming PC's screen to a laptop on the same home network at 1080p and up to 240 Hz. One app installs on both machines and sets up Sunshine and Moonlight, the open-source streaming tools, for you.</p>
         <ul class="points">
           <li>Pair with a 4-digit PIN that expires after 5 minutes and locks out after 3 wrong tries</li>
           <li>Pick 60, 120, 144 or 240 Hz per session, or set a custom default</li>
           <li>Only connects to local network addresses and never opens firewall ports</li>
           <li>Logins live in Windows Credential Manager, never in a file</li>
         </ul>
-      </div>
-      <div class="preview" role="img" aria-label="Illustration of ScreenLink's client screen: paired with a gaming PC, refresh rate set to 240 Hz">
-        <div class="pv-head"><span>Client · Laptop</span><span><span class="dot"></span>Paired</span></div>
-        <p class="host">Gaming PC</p>
-        <p class="label">192.168.1.24 · Sunshine</p>
-        <p class="label hz-label">Refresh rate</p>
-        <div class="hz"><i></i><span>60</span><span>120</span><span>144</span><span>240</span></div>
-        <div class="pv-foot">
-          <div><span class="label">Stream</span><span class="figure">1080p · <span data-count>240</span> Hz</span></div>
-          <span class="pv-btn">Connect</span>
+        <div class="actions">
+          <p class="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            Source is private
+          </p>
         </div>
       </div>
+      <figure class="demo">
+        <div class="preview" role="img" aria-label="Illustration of ScreenLink's client screen with sample values: paired with a gaming PC, refresh rate set to 240 Hz">
+          <div class="pv-head"><span>Client · Laptop</span><span><span class="dot"></span>Paired</span></div>
+          <div class="pv-group">
+            <p class="host">Gaming PC</p>
+            <p class="label">192.168.1.24 · Sunshine</p>
+          </div>
+          <div class="pv-group">
+            <p class="label">Refresh rate</p>
+            <div class="hz"><i></i><span>60</span><span>120</span><span>144</span><span>240</span></div>
+          </div>
+          <div class="pv-foot">
+            <div><span class="label">Stream</span><span class="figure">1080p · <span data-count>240</span> Hz</span></div>
+            <span class="pv-btn">Connect</span>
+          </div>
+        </div>
+        <figcaption>Fig. 2 · Illustration with sample values</figcaption>
+      </figure>
     </section>
 
     <section class="project" id="fusion-reactor">
       <div class="project-text">
         <h2>Fusion Reactor Controller</h2>
-        <p class="stack">Lua · ComputerCraft · Minecraft</p>
-        <p class="pitch">An automation script for the Better Fusion Reactors mod. It tunes control rods and fuel injection to keep the reactor near 100% efficiency without overheating.</p>
+        <p class="stack">Lua · Minecraft (ComputerCraft)</p>
+        <p class="pitch">A feedback controller for the Better Fusion Reactors Minecraft mod. Every cycle it reads the reactor's efficiency and error level, then adjusts the control rods and fuel injection to hold it near 100% efficiency without overheating.</p>
         <ul class="points">
-          <li>Adaptive control steps make large corrections fast and fine-tune near the target</li>
-          <li>A cooldown after each direction change stops the rods from oscillating</li>
-          <li>Searches for the injection rate that keeps the heat multiplier lowest</li>
+          <li>Adaptive step size: big corrections when far from the target, fine steps close to it</li>
+          <li>A cooldown after each direction reversal keeps the rods from oscillating</li>
+          <li>Searches for the injection rate that keeps the heat multiplier, and so the reactor's heat, lowest</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="https://github.com/CharlieMcNabb1/Better-Fusion-Reactor-Automation-Logic-Script">Source</a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/Better-Fusion-Reactor-Automation-Logic-Script">Source<span class="sr-only"> code for the Fusion Reactor Controller</span></a>
         </div>
       </div>
-      <div class="preview" role="img" aria-label="Illustration of the reactor controller's terminal: 99.6% efficiency, 0.4% error level">
-        <div class="pv-head"><span>reactorController.lua</span><span>CC: Tweaked</span></div>
-        <div><span class="label">Efficiency</span><span class="figure"><span data-count>99.6</span>%</span></div>
-        <div class="bar eff"><i></i></div>
-        <dl class="telemetry">
-          <dt>Error level</dt><dd>0.4%</dd>
-          <dt>Plasma temp</dt><dd>3,200 K</dd>
-          <dt>Control rods</dt><dd>42%</dd>
-          <dt>Injection rate</dt><dd>38</dd>
-          <dt>Mode</dt><dd>Fine-tune</dd>
-        </dl>
-        <p class="label">Press any key to stop</p>
-      </div>
+      <figure class="demo">
+        <div class="preview" role="img" aria-label="Illustration of the reactor controller's terminal with sample values: 99.6% efficiency, 0.4% error level">
+          <div class="pv-head"><span>reactorController.lua</span><span>CC: Tweaked</span></div>
+          <div><span class="label">Efficiency</span><span class="figure"><span data-count>99.6</span>%</span></div>
+          <div class="bar eff"><i></i></div>
+          <dl class="telemetry">
+            <dt>Error level</dt><dd>0.4%</dd>
+            <dt>Plasma temp</dt><dd>3,200 K</dd>
+            <dt>Control rods</dt><dd>42%</dd>
+            <dt>Injection rate</dt><dd>38</dd>
+            <dt>Mode</dt><dd>Fine-tune</dd>
+          </dl>
+          <p class="label">Press any key to stop</p>
+        </div>
+        <figcaption>Fig. 3 · Illustration with sample values</figcaption>
+      </figure>
     </section>
   </main>
 
-  <footer class="wrap">
-    <div class="footer">
-      <span>Charlie McNabb</span>
-      <a href="https://github.com/CharlieMcNabb1">github.com/CharlieMcNabb1</a>
+  <footer class="wrap footer">
+    <div class="closing">
+      <h2>Everything public lives on GitHub</h2>
+      <a class="btn btn-primary" href="https://github.com/CharlieMcNabb1">Open my GitHub profile</a>
     </div>
+    <dl class="title-block">
+      <div><dt>Drawn by</dt><dd>Charlie McNabb</dd></div>
+      <div><dt>School</dt><dd>Colorado School of Mines</dd></div>
+      <div><dt>Program</dt><dd>Computer science</dd></div>
+      <div><dt>Sheet</dt><dd>1 of 1</dd></div>
+    </dl>
   </footer>
 </body>
 </html>
