@@ -28,7 +28,7 @@ const live = new IntersectionObserver((entries) => {
   for (const e of entries) {
     const card = e.target;
     const below = e.boundingClientRect.top > 0;
-    if (e.intersectionRatio >= 0.3 && !card.classList.contains('live')) {
+    if (e.intersectionRatio >= 0.6 && !card.classList.contains('live')) {
       card.classList.add('live');
       if (motion) card.querySelectorAll('[data-count]').forEach(countUp);
     } else if (!e.isIntersecting) {
@@ -36,5 +36,16 @@ const live = new IntersectionObserver((entries) => {
       card.classList.toggle('live', !below);
     }
   }
-}, { threshold: [0, 0.3] });
+}, { threshold: [0, 0.6] });
 document.querySelectorAll('.preview').forEach((el) => live.observe(el));
+
+// Pill nav: mark the section crossing the middle of the viewport. The hero counts as Work.
+const tabs = document.querySelectorAll('.pill a');
+const spy = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    const id = e.target.id === 'about' ? 'about' : 'work';
+    tabs.forEach((t) => (t.dataset.section === id ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current')));
+  }
+}, { rootMargin: '-50% 0px -50% 0px' });
+['top', 'work', 'about'].forEach((id) => spy.observe(document.getElementById(id)));

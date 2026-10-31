@@ -18,7 +18,7 @@ Two audiences, weighted equally:
 
 ## Product Purpose
 
-A personal portfolio for Charlie McNabb, a third-year computer science student at Colorado School of Mines focused on AI and robotics. It shows three projects: the two public repositories and one private app. Success means a visitor understands what each project does and follows through to GitHub (source, release, or profile).
+A personal portfolio for Charlie McNabb, a third-year computer science student at Colorado School of Mines focused on AI and robotics. It shows three projects: the two public repositories and one private app. Success means a visitor understands what each project does and follows through to GitHub (source, release, or profile) or LinkedIn.
 
 ## Positioning
 
@@ -30,12 +30,12 @@ Confirmed thesis (2026-10-30): careful systems software and feedback controllers
 
 - Projects shown, in order: WinFastCleaner (Rust, public, v0.1.0 release), ScreenLink (Rust + Tauri + TypeScript, **private source**: never link to its repository), Fusion Reactor Controller (Lua, public).
 - Not shown: the GitHub profile README repo and all other private repositories.
-- Contact is GitHub only (https://github.com/CharlieMcNabb1). No email or other contact methods.
+- Contact is GitHub (https://github.com/CharlieMcNabb1) and LinkedIn (https://www.linkedin.com/in/charlie-mcnabb) only. No email or other contact methods (updated 2026-10-30).
 
 ## Brand Commitments
 
 Binding visual constraints from Charlie:
-- Blue and white palette with pink as the stand-out accent.
+- Blue and white palette with pink as the stand-out accent. Since the 2026-10-30 redesign this is a blue-black canvas with white type and pink.
 - A background that stands out.
 - Demo cards that animate when scrolled into view.
 - Clean overall look.

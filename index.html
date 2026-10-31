@@ -7,32 +7,53 @@
   <meta name="description" content="Charlie McNabb builds careful systems software and feedback controllers. Computer science student at Colorado School of Mines.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400..700&family=Fragment+Mono&family=Host+Grotesk:wght@400..600&display=swap">
   <link rel="stylesheet" href="style.css">
   <script>document.documentElement.classList.add('js')</script>
   <script src="reveal.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#projects">Skip to projects</a>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16M5 13l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></g></symbol>
+  </svg>
 
-  <nav class="wrap nav">
-    <a class="wordmark" href="#top">Charlie McNabb</a>
+  <a class="skip" href="#work">Skip to projects</a>
+
+  <header class="wrap nav">
+    <a class="wordmark" href="#top">
+      <span class="name">Charlie McNabb</span>
+      <span class="role">Computer science · Colorado School of Mines</span>
+    </a>
+    <nav class="pill" aria-label="Sections">
+      <a href="#work" data-section="work" aria-current="true">Work</a>
+      <a href="#about" data-section="about">About</a>
+    </nav>
     <div class="nav-links">
-      <a href="#projects">Projects</a>
-      <a href="https://github.com/CharlieMcNabb1">GitHub</a>
-    </div>
-  </nav>
-
-  <header class="wrap hero" id="top">
-    <h1 class="reveal" style="--i:0">I build careful systems software and feedback controllers</h1>
-    <p class="lede reveal" style="--i:1">Third-year computer science student at Colorado School of Mines, focused on AI and robotics. Below: a disk cleaner, a game streaming app and a reactor control loop.</p>
-    <div class="actions reveal" style="--i:2">
-      <a class="btn btn-primary" href="#projects">See projects</a>
-      <a class="btn" href="https://github.com/CharlieMcNabb1">GitHub</a>
+      <a href="https://www.linkedin.com/in/charlie-mcnabb">LinkedIn<svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
+      <a href="https://github.com/CharlieMcNabb1">GitHub<svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
     </div>
   </header>
 
-  <main class="wrap" id="projects">
+  <div class="wrap" id="top">
+    <div class="window hero">
+      <div class="window-inner">
+        <div class="titlebar" aria-hidden="true">
+          <span class="lights"><i></i><i></i><i></i></span>
+          <svg class="icon"><use href="#i-plus"/></svg>
+        </div>
+        <div class="hero-body">
+          <h1 class="reveal" style="--i:0">I build <em>careful</em> systems software &amp; feedback controllers.</h1>
+          <p class="lede reveal" style="--i:1">Computer science student at Colorado School of Mines.<span>Third year, focused on AI and robotics.</span></p>
+          <a class="cue reveal" style="--i:2" href="#work" aria-label="Scroll to projects"><svg class="icon"><use href="#i-down"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" id="work">
     <section class="project" id="winfastcleaner">
       <div class="project-text">
         <h2>WinFastCleaner</h2>
@@ -45,24 +66,29 @@
           <li>No ads, no accounts, no telemetry, and it works fully offline</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner">Source<span class="sr-only"> code for WinFastCleaner</span></a>
-          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner/releases/tag/v0.1.0">Download <span class="sr-only">WinFastCleaner </span>v0.1.0</a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner">Source<span class="sr-only"> code for WinFastCleaner</span><svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/WinFastCleaner/releases/tag/v0.1.0">Download <span class="sr-only">WinFastCleaner </span>v0.1.0<svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
         </div>
       </div>
       <figure class="demo">
-        <div class="preview" role="img" aria-label="Illustration of WinFastCleaner's clean preview with sample values: five safe items on drive C, 2.31 GB ready to clean">
-          <div class="pv-head"><span>Clean preview</span><span>Drive C: · NTFS</span></div>
-          <div class="scan"><span>Reading Master File Table</span><div class="bar"><i></i></div></div>
-          <ul class="rows">
-            <li style="--i:0"><span class="dot"></span>Temporary files<span>1.42 GB</span></li>
-            <li style="--i:1"><span class="dot"></span>Internet cache<span>612 MB</span></li>
-            <li style="--i:2"><span class="dot"></span>Thumbnail cache<span>148 MB</span></li>
-            <li style="--i:3"><span class="dot"></span>Program crash dumps<span>96 MB</span></li>
-            <li style="--i:4"><span class="dot"></span>Error reports<span>31 MB</span></li>
-          </ul>
-          <div class="pv-foot">
-            <div><span class="label">Ready to clean</span><span class="figure"><span data-count>2.31</span> GB</span></div>
-            <span class="label">Recovery bin on</span>
+        <div class="window preview" role="img" aria-label="Illustration of WinFastCleaner's clean preview with sample values: five safe items on drive C, 2.31 GB ready to clean">
+          <div class="window-inner">
+            <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span><span class="title">WinFastCleaner</span></div>
+            <div class="pv">
+              <div class="pv-head"><span>Clean preview</span><span>Drive C: · NTFS</span></div>
+              <div class="scan"><span>Reading Master File Table</span><div class="bar"><i></i></div></div>
+              <ul class="rows">
+                <li style="--i:0"><span class="dot"></span>Temporary files<span>1.42 GB</span></li>
+                <li style="--i:1"><span class="dot"></span>Internet cache<span>612 MB</span></li>
+                <li style="--i:2"><span class="dot"></span>Thumbnail cache<span>148 MB</span></li>
+                <li style="--i:3"><span class="dot"></span>Program crash dumps<span>96 MB</span></li>
+                <li style="--i:4"><span class="dot"></span>Error reports<span>31 MB</span></li>
+              </ul>
+              <div class="pv-foot">
+                <div><span class="label">Ready to clean</span><span class="figure"><span data-count>2.31</span> GB</span></div>
+                <span class="label">Recovery bin on</span>
+              </div>
+            </div>
           </div>
         </div>
         <figcaption>Fig. 1 · Illustration with sample values</figcaption>
@@ -81,26 +107,28 @@
           <li>Logins live in Windows Credential Manager, never in a file</li>
         </ul>
         <div class="actions">
-          <p class="note">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            Source is private
-          </p>
+          <p class="note"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Source is private</p>
         </div>
       </div>
       <figure class="demo">
-        <div class="preview" role="img" aria-label="Illustration of ScreenLink's client screen with sample values: paired with a gaming PC, refresh rate set to 240 Hz">
-          <div class="pv-head"><span>Client · Laptop</span><span><span class="dot"></span>Paired</span></div>
-          <div class="pv-group">
-            <p class="host">Gaming PC</p>
-            <p class="label">192.168.1.24 · Sunshine</p>
-          </div>
-          <div class="pv-group">
-            <p class="label">Refresh rate</p>
-            <div class="hz"><i></i><span>60</span><span>120</span><span>144</span><span>240</span></div>
-          </div>
-          <div class="pv-foot">
-            <div><span class="label">Stream</span><span class="figure">1080p · <span data-count>240</span> Hz</span></div>
-            <span class="pv-btn">Connect</span>
+        <div class="window preview" role="img" aria-label="Illustration of ScreenLink's client screen with sample values: paired with a gaming PC, refresh rate set to 240 Hz">
+          <div class="window-inner">
+            <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span><span class="title">ScreenLink</span></div>
+            <div class="pv">
+              <div class="pv-head"><span>Client · Laptop</span><span><span class="dot"></span>Paired</span></div>
+              <div class="pv-group">
+                <p class="host">Gaming PC</p>
+                <p class="label"><span class="num">192.168.1.24</span> · Sunshine</p>
+              </div>
+              <div class="pv-group">
+                <p class="label">Refresh rate</p>
+                <div class="hz"><i></i><span>60</span><span>120</span><span>144</span><span>240</span></div>
+              </div>
+              <div class="pv-foot">
+                <div><span class="label">Stream</span><span class="figure">1080p · <span data-count>240</span> Hz</span></div>
+                <span class="pv-btn">Connect</span>
+              </div>
+            </div>
           </div>
         </div>
         <figcaption>Fig. 2 · Illustration with sample values</figcaption>
@@ -118,39 +146,45 @@
           <li>Searches for the injection rate that keeps the heat multiplier, and so the reactor's heat, lowest</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="https://github.com/CharlieMcNabb1/Better-Fusion-Reactor-Automation-Logic-Script">Source<span class="sr-only"> code for the Fusion Reactor Controller</span></a>
+          <a class="btn" href="https://github.com/CharlieMcNabb1/Better-Fusion-Reactor-Automation-Logic-Script">Source<span class="sr-only"> code for the Fusion Reactor Controller</span><svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
         </div>
       </div>
       <figure class="demo">
-        <div class="preview" role="img" aria-label="Illustration of the reactor controller's terminal with sample values: 99.6% efficiency, 0.4% error level">
-          <div class="pv-head"><span>reactorController.lua</span><span>CC: Tweaked</span></div>
-          <div><span class="label">Efficiency</span><span class="figure"><span data-count>99.6</span>%</span></div>
-          <div class="bar eff"><i></i></div>
-          <dl class="telemetry">
-            <dt>Error level</dt><dd>0.4%</dd>
-            <dt>Plasma temp</dt><dd>3,200 K</dd>
-            <dt>Control rods</dt><dd>42%</dd>
-            <dt>Injection rate</dt><dd>38</dd>
-            <dt>Mode</dt><dd>Fine-tune</dd>
-          </dl>
-          <p class="label">Press any key to stop</p>
+        <div class="window preview" role="img" aria-label="Illustration of the reactor controller's terminal with sample values: 99.6% efficiency, 0.4% error level">
+          <div class="window-inner">
+            <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span><span class="title">reactorController.lua</span></div>
+            <div class="pv term">
+              <div class="pv-head"><span>Better Fusion Reactors</span><span>CC: Tweaked</span></div>
+              <div><span class="label">Efficiency</span><span class="figure"><span data-count>99.6</span>%</span></div>
+              <div class="bar eff"><i></i></div>
+              <dl class="telemetry">
+                <dt>Error level</dt><dd>0.4%</dd>
+                <dt>Plasma temp</dt><dd>3,200 K</dd>
+                <dt>Control rods</dt><dd>42%</dd>
+                <dt>Injection rate</dt><dd>38</dd>
+                <dt>Mode</dt><dd>Fine-tune</dd>
+              </dl>
+              <p class="label">Press any key to stop</p>
+            </div>
+          </div>
         </div>
         <figcaption>Fig. 3 · Illustration with sample values</figcaption>
       </figure>
     </section>
   </main>
 
-  <footer class="wrap footer">
-    <div class="closing">
-      <h2>Everything public lives on GitHub</h2>
-      <a class="btn btn-primary" href="https://github.com/CharlieMcNabb1">Open my GitHub profile</a>
+  <section class="wrap about" id="about" aria-labelledby="about-title">
+    <h2 id="about-title" class="sr-only">About</h2>
+    <p class="statement">I'm a third-year computer science student at Colorado School of Mines, focused on AI and robotics. I like software that has to be <em>careful</em>: a cleaner that shows what it will delete before it deletes anything, a streaming app that stays on your home network, and a controller that holds a reactor steady without oscillating.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/CharlieMcNabb1">GitHub<svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
+      <a class="btn" href="https://www.linkedin.com/in/charlie-mcnabb">LinkedIn<svg class="icon" aria-hidden="true"><use href="#i-out"/></svg></a>
     </div>
-    <dl class="title-block">
-      <div><dt>Drawn by</dt><dd>Charlie McNabb</dd></div>
-      <div><dt>School</dt><dd>Colorado School of Mines</dd></div>
-      <div><dt>Program</dt><dd>Computer science</dd></div>
-      <div><dt>Sheet</dt><dd>1 of 1</dd></div>
-    </dl>
+  </section>
+
+  <footer class="wrap footer">
+    <span>Charlie McNabb</span>
+    <span>Colorado School of Mines</span>
   </footer>
 </body>
 </html>
