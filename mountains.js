@@ -226,10 +226,26 @@
     paint(ctx, frameChar, frameB, dirty);
   }
 
+  // The range shows through the intro, then fades out as the gap between the hero window
+  // and the first project crosses the middle of the screen. Hidden, it stops drawing.
+  const hero = document.querySelector('.hero'), first = document.querySelector('#work .project');
+  let shown = 1;
+  const fade = () => {
+    if (!hero || !first) return;
+    // b is where the section's content starts, below its top padding
+    const a = hero.getBoundingClientRect().bottom;
+    const b = first.getBoundingClientRect().top + parseFloat(getComputedStyle(first).paddingTop);
+    shown = 1 - smooth(a, Math.max(b, a + 1), innerHeight / 2);
+    canvas.style.opacity = shown;
+    canvas.style.visibility = shown ? '' : 'hidden';
+  };
+  addEventListener('scroll', fade, { passive: true });
+  fade();
+
   let raf = 0, last = 0;
   const loop = (now) => {
     raf = requestAnimationFrame(loop);
-    if (now - last < 1000 / FPS) return;
+    if (!shown || now - last < 1000 / FPS) return;
     last = now;
     draw(now / 1000);
   };
@@ -244,7 +260,7 @@
   addEventListener('resize', () => {
     if (innerWidth === bakedW && Math.abs(innerHeight - bakedH) < 120) return;
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { bakedW = innerWidth; bakedH = innerHeight; start(); }, 150);
+    resizeTimer = setTimeout(() => { bakedW = innerWidth; bakedH = innerHeight; start(); fade(); }, 150);
   });
   document.addEventListener('visibilitychange', () => {
     if (!motion) return;
