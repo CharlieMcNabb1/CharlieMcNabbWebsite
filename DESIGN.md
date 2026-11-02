@@ -166,7 +166,7 @@ components:
 
 **Creative North Star: "The Desktop of Open Windows"**
 
-The site is a dark desktop. Everything worth looking at sits in an app window: the hero is one large window, and each project gets its own window holding a working mock of the app. The canvas is a deep blue-black lit from above by a soft blue glow. The windows float over that light, so depth comes from the chrome and from long ambient shadows, not from cards or panels.
+The site is a dark desktop. Everything worth looking at sits in an app window: the hero is one large window, and each project gets its own window holding a working mock of the app. The canvas is a deep blue-black lit from above by a soft blue glow, and its wallpaper is a mountain range drawn in glyphs. The windows float over that light, so depth comes from the chrome and from long ambient shadows, not from cards or panels.
 
 Type does the talking. Host Grotesk carries everything in white and cool grey-blues. One word per block is set in Bodoni Moda italic, in bright pink, and in the shipped build that word is "careful" both times. Fragment Mono is used only inside the windows, for numbers and for the ComputerCraft terminal. Pink is the only saturated colour on the page. The window's own devices (the traffic lights and a green status dot) are the one exception.
 
@@ -174,6 +174,7 @@ Motion explains the windows. The hero powers on when the page loads. Each projec
 
 **Key Characteristics:**
 - Blue-black canvas, with a fixed radial blue light from above that the windows scroll over
+- A glyph mountain range as the desktop wallpaper: five depth layers, the tallest peaks framing the hero window, mist drifting through the valleys
 - Double-bezel windows with a steel title bar, traffic lights and hairline borders
 - Fully round controls everywhere (999px): buttons, the pill nav, the note chip
 - White display type with a soft glow; one pink Bodoni italic word
@@ -285,6 +286,7 @@ Quiet frosted pills, with one hot one.
 - **Reveal:** elements rise 14px and clear a 6px blur over 700ms, with a 300ms delay plus 120ms per step.
 - **Unroll:** a scroll-driven `clip-path` runs from the title bar (56px showing) to fully open, while the window rises 48px and grows from 0.95 scale. It runs from `entry 0%` to `cover 30%`. The side and bottom insets are negative so the shadow is not clipped. Browsers without `animation-timeline` show the window already open.
 - **Live demos:** once 60% of a window is in view, its demo plays. The bar fills (900ms), rows stagger in (300ms, 60ms apart, starting at 700ms), the segment slides (800ms), and figures count up over 1s with an ease-out-cubic curve. Scrolling back down past a window replays it; windows above the viewport are shown finished.
+- **Wallpaper:** `mountains.js` draws the range on a fixed `canvas.range` in Fragment Mono at 10/12px, in twelve steps from deep steel to Frost White. Ridges come from ridged noise, faces are lit from the upper left, crests are stroked with `/ \ _ ^`, the two nearest ranges carry `^A` conifers, and the far ranges keep snow. The terrain is painted once per resize; at 12 steps a second only the mist (which drifts slowly sideways) and the twinkling stars are repainted. The canvas recedes from full opacity to 0.38 over the first 90vh of scroll (0.55 static where scroll timelines are missing), so project text always reads over it. It never uses pink. Under reduced motion it is one still frame.
 - **Reduced motion:** every hidden start state lives inside `prefers-reduced-motion: no-preference`. Under `reduce`, content and demos are in their final state, there is no count-up or unroll, and smooth scrolling is off.
 
 ## Do's and Don'ts
