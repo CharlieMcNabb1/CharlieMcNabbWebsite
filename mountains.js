@@ -226,8 +226,8 @@
     paint(ctx, frameChar, frameB, dirty);
   }
 
-  // The range shows through the intro, then fades out as the gap between the hero window
-  // and the first project crosses the middle of the screen. Hidden, it stops drawing.
+  // The range shows through the intro, then fades out across the gap between the hero window
+  // and the first project, stretched half a screen past it. Hidden, it stops drawing.
   const hero = document.querySelector('.hero'), first = document.querySelector('#work .project');
   let shown = 1;
   const fade = () => {
@@ -235,7 +235,9 @@
     // b is where the section's content starts, below its top padding
     const a = hero.getBoundingClientRect().bottom;
     const b = first.getBoundingClientRect().top + parseFloat(getComputedStyle(first).paddingTop);
-    shown = 1 - smooth(a, Math.max(b, a + 1), innerHeight / 2);
+    // Starts as the hero's bottom edge rises past 80% of the viewport, ends as the project's content passes 30%
+    const vh = innerHeight;
+    shown = 1 - smooth(a - 0.3 * vh, b + 0.2 * vh, vh / 2);
     canvas.style.opacity = shown;
     canvas.style.visibility = shown ? '' : 'hidden';
   };

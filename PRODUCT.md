@@ -18,7 +18,7 @@ Two audiences, weighted equally:
 
 ## Product Purpose
 
-A personal portfolio for Charlie McNabb, a third-year computer science student at Colorado School of Mines focused on AI and robotics. It shows three projects: the two public repositories and one private app. Success means a visitor understands what each project does and follows through to GitHub (source, release, or profile) or LinkedIn.
+A personal portfolio for Charlie McNabb, a fourth-year computer science student at Colorado School of Mines focused on AI and robotics. It shows three projects: the two public repositories and one private app. Success means a visitor understands what each project does and follows through to GitHub (source, release, or profile) or LinkedIn.
 
 ## Positioning
 
