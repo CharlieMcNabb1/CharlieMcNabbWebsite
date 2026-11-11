@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Static HTML/CSS with a small vanilla JS file (`reveal.js`), no build step. Deployed with GitHub Pages from `main` at https://charliemcnabb1.github.io/CharlieMcNabbWebsite/.
+Static HTML/CSS with two small vanilla JS files (`site.js` for scroll, the laptop and the demos), no build step. Hosted on Vercel, deployed with the Vercel CLI (`vercel --prod`).
 
 ## Users
 
@@ -35,9 +35,10 @@ Confirmed thesis (2026-10-30): careful systems software and feedback controllers
 ## Brand Commitments
 
 Binding visual constraints from Charlie:
-- Blue and white palette with pink as the stand-out accent. Since the 2026-10-30 redesign this is a blue-black canvas with white type and pink.
+- Black and white for nearly everything, with a pink and purple shimmer that sweeps through text as it first appears, the laptop's display glow, and pink on each demo's key figure (changed 2026-11-10; the earlier green and sand panels and the ASCII mountains are gone).
+- The start page is a space black laptop that opens and zooms into its screen as you scroll, landing on the projects. Each demo arrives centred, then slides left as its text shimmers in beside it, as on scale.com.
 - A background that stands out.
-- Demo cards that animate when scrolled into view.
+- Demos the visitor can operate, on a stage that pins while the three projects swap.
 - Clean overall look.
 - Motion must respect `prefers-reduced-motion`.
 

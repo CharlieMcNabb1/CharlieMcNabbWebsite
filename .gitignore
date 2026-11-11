@@ -1,1 +1,3 @@
 .impeccable/
+.vercel
+.env*
