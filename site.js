@@ -30,10 +30,19 @@ function step() {
   const at = (-stage.getBoundingClientRect().top / travel()) * projects.length;
   const i = Math.min(projects.length - 1, Math.max(0, Math.floor(at)));
   // Without motion nothing waits: the stage shows as soon as it scrolls in, and every project is open
-  stage.classList.toggle('live', !motion || at >= 0);
+  const live = !motion || at >= 0;
+  stage.classList.toggle('live', live);
   projects.forEach((p, k) => {
     p.classList.toggle('on', k === i);
-    p.classList.toggle('open', k === i && (!motion || at - i >= OPEN_AT));
+    p.classList.toggle('past', k < i);
+    // Once open, a project stays open for the rest of its visit; one that leaves keeps its layout
+    // while it fades out, then resets for its next visit
+    if (k === i && live) {
+      clearTimeout(p.reset); p.reset = 0;
+      if (!motion || at - i >= OPEN_AT) p.classList.add('open');
+    } else if (p.classList.contains('open') && !p.reset) {
+      p.reset = setTimeout(() => { p.classList.remove('open'); p.reset = 0; }, 800);
+    }
   });
   tabs.forEach((t, k) => (k === i ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current')));
 }

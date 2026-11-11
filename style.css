@@ -86,41 +86,75 @@ a, .btn, .hz label { transition: color 160ms var(--ease), background-color 160ms
 h1 { max-width: 15em; margin: 0 auto; font-size: clamp(32px, 4.6vw, 68px); line-height: 1.04; letter-spacing: -0.035em; }
 .lede { max-width: 30rem; margin: 20px auto 0; font-size: 18px; line-height: 28px; color: var(--paper-2); }
 
-/* The laptop. .mac is the lid's box, so scaling it about its centre zooms into the screen. */
+/* The laptop, a space-black 14-inch in proportion. .mac is the lid's box, so scaling it about its centre
+   zooms into the screen. --t is the lid's thickness, --b the body's. */
 .mac {
-  --w: min(84vw, 80vh, 880px); --t: calc(var(--w) * 0.014);
+  --w: min(84vw, 80vh, 880px); --t: calc(var(--w) * 0.012); --b: calc(var(--w) * 0.026);
   /* The bottom margin makes room for the deck, which is drawn below the box; the zoom recentres the lid */
-  position: relative; width: var(--w); aspect-ratio: 1.545; margin-bottom: calc(var(--w) * 0.3); transform-style: preserve-3d;
+  position: relative; width: var(--w); aspect-ratio: 1.447; margin-bottom: calc(var(--w) * 0.3); transform-style: preserve-3d;
   transform: translateY(calc(var(--zoom) * var(--w) * 0.15)) scale(pow(var(--s), var(--zoom))) rotateX(calc((1 - var(--zoom)) * -24deg));
 }
+/* The lid's back: anodised black, catching light at the hinge end. It also shows as the thin rim around the bezel. */
 .mac-lid {
   position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: bottom;
   /* -90deg lies shut on the deck; open leans back 6deg, then squares up to the camera during the zoom */
   transform: rotateX(calc(-90deg + var(--open) * 96deg - var(--zoom) * 6deg));
-  border-radius: calc(var(--w) * 0.022); border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(#2c2c2f, var(--shell));
+  border-radius: calc(var(--w) * 0.024);
+  background: linear-gradient(#1b1b1d, #2e2d30 60%, #5d5b5f);
 }
-/* Only the lid's inner face has a display; from behind you see the shell */
+/* The lid's far edge (the front edge when shut) and the hinge, both standing --t deep */
+.mac-lid::before, .mac-lid::after { content: ""; position: absolute; left: 0.6%; right: 0.6%; height: var(--t); }
+.mac-lid::before { top: 0; transform-origin: top; transform: rotateX(90deg); border-radius: 50%/2px; background: linear-gradient(#4a494d, #232325); }
+.mac-lid::after { bottom: 0; left: 6%; right: 6%; transform-origin: bottom; transform: rotateX(-90deg); background: #0b0b0c; }
+/* The inner face: a black glass bezel with the camera notch. From behind only the lid's back shows. */
+.mac-face {
+  position: absolute; inset: 0.4%; border-radius: calc(var(--w) * 0.021);
+  backface-visibility: hidden; transform: translateZ(var(--t));
+  background: #050506; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+.mac-face::before {
+  content: ""; position: absolute; z-index: 1; top: 0; left: 50%; width: 10.5%; height: 3.4%; translate: -50% 0;
+  border-radius: 0 0 calc(var(--w) * 0.006) calc(var(--w) * 0.006);
+  background: radial-gradient(circle at 50% 45%, #1d2433 0 6%, #050506 9%);
+}
 .mac-screen {
-  position: absolute; inset: 2.2% 1.6% 3%; border-radius: calc(var(--w) * 0.012);
-  backface-visibility: hidden; transform: translateZ(1px); background: var(--black); overflow: hidden;
+  position: absolute; inset: 1.6% 1.3% 4.6%; border-radius: calc(var(--w) * 0.012) calc(var(--w) * 0.012) 2px 2px;
+  background: var(--black); overflow: hidden;
 }
-/* The display wakes in pink and purple, then goes dark as the zoom lands on the black stage */
-.mac-screen::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, var(--pink), var(--purple)); opacity: calc(var(--open) * min(1, (1 - var(--zoom)) * 2.5)); }
+/* The display lights white as the lid opens and glows through the zoom, dimming only once it fills
+   the viewport so the black stage can take over */
+.mac-screen { box-shadow: 0 0 calc(var(--w) * 0.02) rgba(255, 255, 255, calc(var(--open) * 0.35)); }
+.mac-screen::after {
+  content: ""; position: absolute; inset: 0; opacity: calc(var(--open) * clamp(0, (1 - var(--zoom)) * 6, 1));
+  background: radial-gradient(120% 120% at 50% 40%, #fff 40%, #ecedf1);
+}
+/* The light the screen throws: a halo in the room and a sheen on the keyboard */
+.hero-pin::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 50% 46% at 50% 42%, rgba(255, 255, 255, 0.2), transparent 70%);
+  opacity: var(--open);
+}
 .mac-deck {
-  position: absolute; inset: 100% 0 auto; aspect-ratio: 1.545; transform-style: preserve-3d; transform-origin: top;
+  position: absolute; inset: 100% 0 auto; aspect-ratio: 1.413; transform-style: preserve-3d; transform-origin: top;
   transform: translateY(var(--t)) rotateX(90deg);
-  border-radius: calc(var(--w) * 0.022); border: 1px solid rgba(255, 255, 255, 0.16);
-  background: linear-gradient(#232326, #18181a);
+  border-radius: calc(var(--w) * 0.03);
+  background:
+    radial-gradient(75% 60% at 50% 0, rgba(255, 255, 255, calc(var(--open) * 0.2)), transparent),
+    url(deck.svg) 0 0 / 100% 100%,
+    linear-gradient(#323235, #252528);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
 }
-.mac-keys {
-  position: absolute; inset: 7% 7% 45%; border-radius: 4px; background-color: #060607;
-  /* Key gaps: the deck showing between rows and columns */
-  background-image: repeating-linear-gradient(90deg, transparent 0 6.5%, #1c1c1e 6.5% 7.2%), repeating-linear-gradient(transparent 0 14.6%, #1c1c1e 14.6% 16.67%);
+/* The body's front edge, hanging --b below the deck, with the thumb scoop and the feet */
+.mac-front {
+  position: absolute; top: 100%; left: 2%; right: 2%; height: var(--b); transform-origin: top; transform: rotateX(-90deg);
+  border-radius: 0 0 calc(var(--b) * 0.8) calc(var(--b) * 0.8) / 0 0 100% 100%;
+  background:
+    linear-gradient(#5a595d, #3b3a3e) 50% 0 / 17% 46% no-repeat,
+    linear-gradient(#3e3d41 0 1px, #242427 8%, #141416);
 }
-.mac-pad { position: absolute; inset: 60% 31% 6%; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); }
-/* The body's front edge, standing up from the deck's near side */
-.mac-lip { position: absolute; inset: auto 0 0; height: var(--t); transform-origin: bottom; transform: rotateX(-90deg); border-radius: 2px; background: linear-gradient(#3a3a3d, #121213); }
+.mac-front::before, .mac-front::after { content: ""; position: absolute; top: 100%; width: 6%; height: 18%; border-radius: 0 0 40% 40%; background: #0e0e0f; }
+.mac-front::before { left: 5%; }
+.mac-front::after { right: 5%; }
 
 /* The stage: the three projects. Wide screens pin it (see the media query below) */
 .stage { color-scheme: dark; accent-color: var(--paper); }
@@ -192,13 +226,13 @@ figcaption { margin-top: 16px; font-size: 13px; color: var(--paper-3); }
 .mist { background: var(--mist); padding-block: clamp(40px, 6vw, 96px); }
 .mist p { margin-top: 12px; max-width: 34rem; font-size: 18px; line-height: 28px; color: var(--ink-2); }
 
-/* Footer: the name, as large as the page allows */
+/* Footer: the name at the wordmark's size */
 .footer { background: var(--black); color: var(--paper); padding: 48px 0 24px; overflow: hidden; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 8px 32px; font-size: 15px; color: var(--paper-2); }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
 .footer-links a:hover { color: var(--paper); }
 .footer-links span { margin-left: auto; line-height: 44px; }
-.footer-name { margin-top: clamp(64px, 12vw, 176px); font-size: clamp(48px, 13.4vw, 208px); font-weight: 300; line-height: 0.9; letter-spacing: -0.05em; white-space: nowrap; }
+.footer-name { margin-top: 32px; font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
 
 /* Pinned stage: the screen holds while the three projects swap in place. site.js sets .live on the
    stage once it pins, .on on the current project, and .open once its text should appear. */
@@ -251,8 +285,10 @@ figcaption { margin-top: 16px; font-size: 13px; color: var(--paper-3); }
     .js .stage { margin-top: -100vh; }
     .js .stage-pin { transition: opacity 500ms var(--ease), visibility 0s; }
     .js .stage:not(.live) .stage-pin { transition-delay: 0s, 500ms; }
-    .js .project { transition: opacity 400ms var(--ease), visibility 0s; }
-    .js .project:not(.on) { transition-delay: 0s, 400ms; }
+    /* Projects hand over like a crossfade with depth: the outgoing one lifts away, the next rises in a beat later */
+    .js .project { transition: opacity 700ms var(--ease) 200ms, translate 1100ms var(--ease) 120ms, scale 1100ms var(--ease) 120ms, visibility 0s; }
+    .js .project:not(.on) { translate: 0 64px; scale: 0.97; transition: opacity 450ms ease-in, translate 700ms ease-in, scale 700ms ease-in, visibility 0s 700ms; }
+    .js .project.past:not(.on) { translate: 0 -64px; }
     .js .demo { transition: translate 900ms var(--ease), transform 900ms var(--ease); }
     .js .project-text .actions { transition: opacity 600ms var(--ease); }
     .js .open .actions { transition-delay: 600ms; }
