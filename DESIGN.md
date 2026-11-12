@@ -208,7 +208,7 @@ components:
 
 **Creative North Star: "Open the Laptop, Operate the Work"**
 
-The page is black and white. A black nav band leads into a black hero where a laptop, built entirely in CSS 3D, sits closed under the headline. Scrolling opens its lid, its display wakes in a pink to purple glow, and the view then zooms into that display until it fills the screen and goes dark. The dark lands on the project stage, where each project's demo arrives tilted in space and then turns toward its text. After the stage come a white About statement, a pale grey links panel and a black footer.
+The page is black and white. A black nav band leads into a black hero where a laptop, built entirely in CSS 3D, sits closed under the headline. Scrolling opens its lid, its display lights white and throws its light across the keys, and the view then zooms into that display until it fills the screen and goes dark. The dark lands on the project stage, where each project's demo arrives tilted in space and then turns toward its text. After the stage come a white About statement, a pale grey links panel and a black footer.
 
 The projects are shown as instruments, not screenshots. Each demo is a dark panel that behaves like a small piece of the real app: tick rows to change a total, pick a refresh rate, drag control rods and watch a controller step them back. They stay fully operable while tilted. Every demo is captioned as an illustration with sample values.
 
@@ -218,7 +218,7 @@ The user first asked for the 3D to be generated with Higgsfield. The account cou
 
 **Key Characteristics:**
 - Black and white for nearly everything; pink and purple only in the shimmer, the display glow and the demo figures
-- A CSS 3D space black laptop (lid, deck, keys, trackpad, front lip) that opens and zooms into its display over a 320vh pinned hero
+- A CSS 3D space black laptop in matte anodised aluminium (lid, deck, keycaps, trackpad, rounded side edges, front lip), with no logo or branding anywhere, sitting on a faintly lit surface. It opens and zooms into its display over a 320svh pinned hero
 - A pinned project stage where each demo arrives centred and tilted, then slides left and turns toward its text
 - Demo panels that are operable with native checkboxes, radios, a toggle button and a range input, tilted or not
 - Light (300) display type with tight tracking; mono for values and the terminal demo only
@@ -249,7 +249,7 @@ Neutral greys on white and black, one laptop shell grey, a two-colour shimmer, a
 - **Rule Dark** (rule-dark): every hairline on black and the outline button there.
 - **Surface Dark** (surface-dark): the demo panel body.
 - **Fill Dark** (fill-dark): rows, the segment track and the meter track. Row hover raises it to white at 0.1 alpha.
-- **Shell** (shell): the laptop's lid and deck, in near-black greys from `#2c2c2f` to `#121213`.
+- **Shell** (shell): the laptop's lid and deck, in near-black neutral greys from `#4b4a4e` (where the lid's far end catches light) down to `#141416`, under a fine white grain.
 
 ### Named Rules
 **The Shimmer Colour Rule.** Pink and purple appear only in the text shimmer, the laptop display glow and the demo key figures (plus text selection). They are never a button, link, border, heading fill or hover colour.
@@ -305,12 +305,19 @@ Spacing steps in use: 4, 8, 12, 16, 24, 32, 48, 72 and 96px. Text columns are ca
 
 Surfaces are flat and separated by tone and hairlines. Depth exists in two places, both in CSS 3D:
 
-- **The laptop:** a `preserve-3d` model under 1800px perspective. The lid hinges from its bottom edge (-90deg shut, +6deg past upright when open, squaring up during the zoom), the deck lies flat behind it with a keyboard drawn as repeating gradients and an outlined trackpad, and a front lip stands up from the deck's near side. Only the lid's inner face shows the display (`backface-visibility: hidden`). Lid and deck carry a faint white hairline and a vertical shell gradient.
+- **The laptop:** a `preserve-3d` model under 1800px perspective. The lid hinges from its bottom edge (-90deg shut, +6deg past upright when open, squaring up during the zoom). The deck lies flat in front of the hinge, with the keyboard and trackpad drawn by `deck.svg`. A front lip hangs from the deck's near edge, and two narrow strips hinged on its sides, splayed 40deg down, are the body's rounded side edges (any steeper and they turn edge-on to the low, centred camera). Only the lid's inner face shows the display (`backface-visibility: hidden`).
+- **The ground:** the surface under the laptop is a second, separate 3D scene (`.mac-ground`) with the same box and transform as the laptop, drawn before it. It holds one plane just under the feet: a faint radial pool of white light (alpha 0.05 at rest, up to 0.14 with `--open`) and the base's footprint in black, feathered with two box-shadows, as the contact shadow. Being its own scene, it is never depth-sorted against the laptop's planes.
 
   **The No Crossing Planes Rule.** No two planes of the laptop may cross, counting each layer's painted overflow. Chrome depth-sorts a `preserve-3d` scene by splitting any layer that crosses another's plane, and its software compositor (used when the GPU is off or blocklisted, and in headless Chrome) drops some of the split tiles, leaving holes. So the face clips its contents (`overflow: hidden`), keeping the screen glow off the lid's edge planes, and the deck starts 1.2 `--t` in front of the hinge, past where the face's plane meets it (at most 1.11 `--t` with the lid leant back 6deg).
 - **The tilted demos (pinned stage only):** each demo panel arrives centred with `perspective(1600px) rotateX(10deg) scale(1.04)`, then moves to its column with `rotateY(11deg) rotateX(2deg)`. Its near edge is drawn with a stack of five 1px offset box-shadows in falling greys, standing in for panel thickness.
 
-The display glow is a 115deg pink to purple gradient whose opacity follows the lid opening and falls to zero over the first 40% of the zoom.
+The laptop's finish and light are all static gradients and two SVG files; nothing on it uses a CSS `filter` or `backdrop-filter`:
+
+- **Material:** `noise.svg`, a 160px seamless tile of faint white specks (feTurbulence, drawn once and repeated at 150px), lies over the lid's back and the deck's palm rest. Under it the lid has a broad 100deg reflection at 0.045 alpha and the deck a soft radial one at 0.04. The keycaps and trackpad are drawn over the grain, so they stay smooth.
+- **Edges:** lid and deck carry inset box-shadows only (so nothing paints outside their planes): a 1px white rim, a brighter line along the far edge of the lid and the near edge of the deck, and a dark inner feather where the surface rolls away.
+- **Screen light:** two white radial gradients on the deck, a bright band along the hinge and a broad falloff across the keys to the palm rest, plus a lit back edge, all scaled by `--open`.
+- **Keyboard and trackpad:** each keycap sits in a near-black well 3 units larger than itself, with a top-to-bottom gradient and a stroke that runs from a white highlight on the edge facing the screen to a shadow on the near edge. The trackpad has a smooth diagonal gradient and an edge that is dark at the top and light at the bottom, so it reads as inset glass.
+- **Display:** lit, it is just short of full white (`#f5f6f8` to `#e8e9ed`) with a soft 118deg white band across it as a glass reflection; the same band carries across the black bezel and notch. The lit layer's opacity follows the lid opening and falls to zero over the last sixth of the zoom.
 
 ## Shapes
 
@@ -335,7 +342,7 @@ Lines are 1px solid hairlines: Rule on light, Rule Dark on black. Bullets are 8p
 - **Skip link:** white with black text, 8px corners, top left on focus.
 
 ### Laptop (signature)
-Decorative and `aria-hidden`. Lid (shell gradient, display inset 2.2% / 1.6% / 3%), deck (keys, trackpad), front lip. Driven by custom properties `--open`, `--zoom`, `--scale` and `--fade`, set by site.js from the hero's scroll progress. `--scale` is the zoom's current scale (the cover scale raised to `--zoom`), computed in JS because CSS `pow()` is too new for older mobile browsers, which would drop the whole transform. Defaults are lid open, no zoom.
+Decorative and `aria-hidden`, and an original design: no logo, wordmark or branding on any face, including the back of the lid. Two elements share one box and transform: `.mac-ground` (the surface and contact shadow) and `.mac` (lid with face and display, deck with side edges and front lip). Textures are `noise.svg` (grain) and `deck.svg` (78 keycaps, speaker grilles, trackpad). Driven by custom properties `--open`, `--zoom`, `--scale` and `--fade`, set by site.js from the hero's scroll progress. `--scale` is the zoom's current scale (the cover scale raised to `--zoom`), computed in JS because CSS `pow()` is too new for older mobile browsers, which would drop the whole transform. Defaults are lid open, no zoom.
 
 ### Text shimmer
 Applied to `.reveal` elements (h1, hero lede, Mist heading and paragraph, footer name) and to each project's h2, paragraphs and list. The text is clipped to a 100deg gradient (current colour, then pink at 42%, purple at 52%, transparent at 62%) sized 300% wide; it starts showing the transparent end and slides over 1300ms to the solid current colour, staggered 110ms per line. It runs once, when an IntersectionObserver sees 20% of the element or when a pinned project opens.
@@ -381,6 +388,7 @@ Under `prefers-reduced-motion: reduce`: the hero is not pinned and the laptop re
 - **Do** set large type in Host Grotesk at weight 300 with negative tracking.
 - **Do** keep hidden start states inside `prefers-reduced-motion: no-preference`.
 - **Do** keep page-level links and buttons at a 44px hit height, and every control at least 44px on touch screens (`pointer: coarse`).
+- **Do** light and texture the laptop with static gradients, inset box-shadows and SVG images only. It is transformed every frame, so no CSS `filter`, `backdrop-filter` or blur on any part of it.
 - **Do** keep hover purely decorative, and put hover on controls that are tapped in place (demo rows, segments, buttons on black) inside `@media (hover: hover)` so the colour doesn't stick after a tap.
 
 ### Don't:

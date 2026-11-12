@@ -90,14 +90,28 @@ h1 { max-width: 15em; margin: 0 auto; font-size: clamp(32px, 4.6vw, 68px); line-
 
 /* The laptop, a space-black 14-inch in proportion. .mac is the lid's box, so scaling it about its centre
    zooms into the screen. --t is the lid's thickness, --b the body's. */
-.mac {
+.mac, .mac-ground {
   --w: min(84vw, 80vh, 880px); --t: calc(var(--w) * 0.012); --b: calc(var(--w) * 0.026);
-  /* The bottom margin makes room for the deck, which is drawn below the box; the zoom recentres the lid */
-  position: relative; width: var(--w); aspect-ratio: 1.447; margin-bottom: calc(var(--w) * 0.3); transform-style: preserve-3d;
+  /* The bottom margin makes room for the deck, which is drawn below the box; the zoom recentres the lid.
+     Both sit in the same grid cell (below the headline at rest), so the ground lines up under the laptop. */
+  grid-area: 2 / 1; position: relative; width: var(--w); aspect-ratio: 1.447; margin-bottom: calc(var(--w) * 0.3); transform-style: preserve-3d;
   transform: translateY(calc(var(--zoom) * var(--w) * 0.15)) scale(var(--scale)) rotateX(calc((1 - var(--zoom)) * -24deg));
 }
 /* A custom property can't fall back declaration by declaration, so svh needs its own test */
-@supports (height: 1svh) { .mac { --w: min(84vw, 80svh, 880px); } }
+@supports (height: 1svh) { .mac, .mac-ground { --w: min(84vw, 80svh, 880px); } }
+/* The surface the laptop sits on, just under its feet. It is its own 3D scene, drawn before the laptop,
+   so it is never depth-sorted against the laptop's planes: one plane, hinged on the same line as the deck. */
+.mac-ground > i {
+  position: absolute; left: -70%; right: -70%; top: calc(100% - var(--w) * 0.5); height: calc(var(--w) * 2);
+  transform-origin: 50% 25%; transform: translate3d(0, calc(var(--t) + var(--b) * 1.25), calc(var(--t) * 1.2)) rotateX(90deg);
+  /* A faint pool of light on the surface, brighter with the screen */
+  background: radial-gradient(48% 46% at 50% 52.5%, rgba(255, 255, 255, calc(0.05 + var(--open) * 0.09)), rgba(255, 255, 255, calc(0.02 + var(--open) * 0.03)) 55%, transparent);
+}
+/* The contact shadow: the base's footprint in black, feathered outwards and heavier towards the front */
+.mac-ground > i::before {
+  content: ""; position: absolute; left: 29.17%; width: 41.66%; top: 25%; aspect-ratio: 1.413; border-radius: calc(var(--w) * 0.03); background: var(--black);
+  box-shadow: 0 0 calc(var(--w) * 0.012) calc(var(--w) * 0.003) var(--black), 0 calc(var(--w) * 0.012) calc(var(--w) * 0.06) calc(var(--w) * 0.01) rgba(0, 0, 0, 0.75);
+}
 /* No two planes of the laptop may cross. Chrome depth-sorts a preserve-3d scene by splitting any layer
    that crosses another's plane, and its software compositor (used when the GPU is off or blocklisted)
    drops some of the split tiles, leaving holes. The two crossings were the screen glow spilling past
@@ -109,7 +123,13 @@ h1 { max-width: 15em; margin: 0 auto; font-size: clamp(32px, 4.6vw, 68px); line-
   /* -90deg lies shut on the deck; open leans back 6deg, then squares up to the camera during the zoom */
   transform: rotateX(calc(-90deg + var(--open) * 96deg - var(--zoom) * 6deg));
   border-radius: calc(var(--w) * 0.024);
-  background: linear-gradient(#1b1b1d, #2e2d30 60%, #5d5b5f);
+  /* Grain, a broad soft reflection, then the anodised base */
+  background:
+    url(noise.svg) 0 0 / 150px,
+    linear-gradient(100deg, transparent 22%, rgba(255, 255, 255, 0.045) 44%, transparent 68%),
+    linear-gradient(#1c1c1e, #2a2a2d 55%, #4b4a4e);
+  /* Light catching the rounded edges: a rim all round, brighter along the far edge */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 1.5px 0 rgba(255, 255, 255, 0.16), inset 0 0 calc(var(--w) * 0.008) rgba(0, 0, 0, 0.4);
 }
 /* The lid's far edge (the front edge when shut) and the hinge, both standing --t deep */
 .mac-lid::before, .mac-lid::after { content: ""; position: absolute; left: 0.6%; right: 0.6%; height: var(--t); }
@@ -136,7 +156,15 @@ h1 { max-width: 15em; margin: 0 auto; font-size: clamp(32px, 4.6vw, 68px); line-
 .mac-screen { box-shadow: 0 0 calc(var(--w) * 0.02) rgba(255, 255, 255, calc(var(--open) * 0.35)); }
 .mac-screen::after {
   content: ""; position: absolute; inset: 0; opacity: calc(var(--open) * clamp(0, (1 - var(--zoom)) * 6, 1));
-  background: radial-gradient(120% 120% at 50% 40%, #fff 40%, #ecedf1);
+  /* A faint diagonal reflection in the glass, over a display just short of full white so it can show */
+  background:
+    linear-gradient(118deg, transparent 28%, rgba(255, 255, 255, 0.6) 43%, transparent 58%),
+    radial-gradient(120% 120% at 50% 40%, #f5f6f8 40%, #e8e9ed);
+}
+/* The same reflection carries across the black bezel and the notch while the screen is lit */
+.mac-face::after {
+  content: ""; position: absolute; z-index: 2; inset: 0; opacity: calc(var(--open) * clamp(0, (1 - var(--zoom)) * 6, 1));
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.1), transparent 20%, transparent 30%, rgba(255, 255, 255, 0.05) 43%, transparent 56%, transparent 82%, rgba(255, 255, 255, 0.06));
 }
 /* The light the screen throws: a halo in the room and a sheen on the keyboard */
 .hero-pin::before {
@@ -151,11 +179,20 @@ h1 { max-width: 15em; margin: 0 auto; font-size: clamp(32px, 4.6vw, 68px); line-
   transform: translate3d(0, var(--t), calc(var(--t) * 1.2)) rotateX(90deg);
   border-radius: calc(var(--w) * 0.03);
   background:
-    radial-gradient(75% 60% at 50% 0, rgba(255, 255, 255, calc(var(--open) * 0.2)), transparent),
+    /* The screen's light: bright along the hinge, falling off across the keys to the palm rest */
+    radial-gradient(70% 14% at 50% 0, rgba(255, 255, 255, calc(var(--open) * 0.3)), transparent),
+    radial-gradient(95% 105% at 50% 0, rgba(255, 255, 255, calc(var(--open) * 0.26)), rgba(255, 255, 255, calc(var(--open) * 0.08)) 50%, transparent),
     url(deck.svg) 0 0 / 100% 100%,
+    url(noise.svg) 0 0 / 150px,
+    radial-gradient(90% 70% at 30% 100%, rgba(255, 255, 255, 0.04), transparent),
     linear-gradient(#323235, #252528);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+  /* Edges: the lit back edge, the near edge, a rim, and the surface rolling away at the perimeter */
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, calc(var(--open) * 0.22)), inset 0 -1.5px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 0 calc(var(--w) * 0.008) rgba(0, 0, 0, 0.45);
 }
+/* The body's rounded side edges: strips hinged on the deck's sides and splayed 40deg down. Any steeper and they turn edge-on to the low, centred camera */
+.mac-deck::before, .mac-deck::after { content: ""; position: absolute; top: 4.2%; bottom: 4.2%; width: calc(var(--b) * 0.6); }
+.mac-deck::before { right: 100%; border-radius: 100% 0 0 100% / 4% 0 0 7%; transform-origin: right; transform: rotateY(-40deg); background: linear-gradient(to left, #4d4c50, #2c2c2f 45%, #151517); }
+.mac-deck::after { left: 100%; border-radius: 0 100% 100% 0 / 0 4% 7% 0; transform-origin: left; transform: rotateY(40deg); background: linear-gradient(to right, #4d4c50, #2c2c2f 45%, #151517); }
 /* The body's front edge, hanging --b below the deck, with the thumb scoop and the feet */
 .mac-front {
   position: absolute; top: 100%; left: 2%; right: 2%; height: var(--b); transform-origin: top; transform: rotateX(-90deg);
@@ -281,6 +318,7 @@ figcaption { margin-top: 16px; font-size: 13px; color: var(--paper-3); }
   .js .hero { height: 320vh; height: 320svh; }
   .js .hero-pin { position: sticky; top: 0; height: 100vh; height: 100svh; grid-template-rows: 1fr; }
   .js .hero-text { position: absolute; inset: 0 0 auto; }
+  .js :is(.mac, .mac-ground) { grid-area: 1 / 1; }
 
   /* Shimmer: text arrives as a pink and purple sweep and settles to its own colour */
   .js :is(.reveal, .project-text > :is(h2, p, ul)) {
