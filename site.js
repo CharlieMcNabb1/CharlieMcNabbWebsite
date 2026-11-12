@@ -4,30 +4,53 @@ document.documentElement.classList.add('js');
 const motion = matchMedia('(prefers-reduced-motion: no-preference)').matches;
 const clamp = (x) => Math.min(1, Math.max(0, x));
 
-// Laptop: the first half of the hero's scroll opens the lid, the second half zooms into the screen
 const hero = document.querySelector('.hero');
+const pin = hero.querySelector('.hero-pin');
 const display = hero.querySelector('.mac-screen');
+const stage = document.querySelector('.stage');
+const stagePin = stage.querySelector('.stage-pin');
+const projects = [...stage.querySelectorAll('.project')];
+const tabs = [...stage.querySelectorAll('.tabs a')];
+const statement = document.querySelector('.statement');
+// Must match the pinned-stage media query in style.css
+const pinned = matchMedia('(min-width: 1024px) and (min-height: 720px)');
+const OPEN_AT = 0.3; // how far into a project's scroll its demo slides aside and the text appears
+
+// Layout is read only here, when the page or the viewport changes size, so scrolling never forces a layout.
+// Heights come from the pinned frames, not innerHeight, which changes as mobile browser bars show and hide.
+let m = {};
+const pageTop = (el) => el.getBoundingClientRect().top + scrollY;
+function measure() {
+  m = {
+    heroTop: pageTop(hero),
+    heroRange: hero.offsetHeight - pin.offsetHeight,
+    // How far the display must grow to cover the pinned frame
+    cover: Math.max(pin.offsetWidth / display.offsetWidth, pin.offsetHeight / display.offsetHeight) * 1.1,
+    stageTop: pageTop(stage),
+    travel: stage.offsetHeight - stagePin.offsetHeight,
+    statementTop: pageTop(statement),
+    statementHeight: statement.offsetHeight,
+    vh: innerHeight,
+  };
+}
+
+// Laptop: the first half of the hero's scroll opens the lid, the second half zooms into the screen
+let lastP;
 function lift() {
-  const p = clamp(-hero.getBoundingClientRect().top / (hero.offsetHeight - innerHeight));
+  const p = m.heroRange > 0 ? clamp((scrollY - m.heroTop) / m.heroRange) : 0;
+  if (p === lastP) return; // past the hero, nothing to restyle
+  lastP = p;
   const open = clamp(p / 0.5);
+  const zoom = clamp((p - 0.5) / 0.5);
   hero.style.setProperty('--open', 1 - (1 - open) ** 3);
-  hero.style.setProperty('--zoom', clamp((p - 0.5) / 0.5));
-  // How far the display must grow to cover the viewport
-  hero.style.setProperty('--s', Math.max(innerWidth / display.offsetWidth, innerHeight / display.offsetHeight) * 1.1);
+  hero.style.setProperty('--zoom', zoom);
+  hero.style.setProperty('--scale', m.cover ** zoom);
   hero.style.setProperty('--fade', clamp(p / 0.12));
 }
 
-const stage = document.querySelector('.stage');
-const projects = [...stage.querySelectorAll('.project')];
-const tabs = [...stage.querySelectorAll('.tabs a')];
-// Must match the pinned-stage media query in style.css
-const pinned = matchMedia('(min-width: 1024px) and (min-height: 720px)');
-const travel = () => stage.offsetHeight - innerHeight;
-const OPEN_AT = 0.3; // how far into a project's scroll its demo slides aside and the text appears
-
 function step() {
   if (!pinned.matches) return;
-  const at = (-stage.getBoundingClientRect().top / travel()) * projects.length;
+  const at = ((scrollY - m.stageTop) / m.travel) * projects.length;
   const i = Math.min(projects.length - 1, Math.max(0, Math.floor(at)));
   // Without motion nothing waits: the stage shows as soon as it scrolls in, and every project is open
   const live = !motion || at >= 0;
@@ -51,7 +74,7 @@ function step() {
 tabs.forEach((t, k) => t.addEventListener('click', (e) => {
   if (!pinned.matches) return;
   e.preventDefault();
-  scrollTo(0, stage.offsetTop + (travel() * (k + OPEN_AT + 0.1)) / projects.length);
+  scrollTo(0, m.stageTop + (m.travel * (k + OPEN_AT + 0.1)) / projects.length);
 }));
 
 // Text shimmers in once it is on screen. Pinned projects are opened by step() instead.
@@ -64,24 +87,32 @@ const seen = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 document.querySelectorAll('.reveal, .project').forEach((el) => seen.observe(el));
 
-const statement = document.querySelector('.statement');
 let words = [];
 if (motion) {
   words = statement.textContent.trim().split(/\s+/).map((w) => Object.assign(document.createElement('span'), { textContent: w }));
   statement.replaceChildren(...words.flatMap((w) => [w, ' ']));
 }
+let lastLit;
 function light() {
-  const r = statement.getBoundingClientRect();
   // From the paragraph's top reaching 85% of the viewport to its bottom reaching 45%
-  const p = (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.4);
+  const p = (m.vh * 0.85 - (m.statementTop - scrollY)) / (m.statementHeight + m.vh * 0.4);
   const n = Math.round(clamp(p) * words.length);
+  if (n === lastLit) return;
+  lastLit = n;
   words.forEach((w, i) => w.classList.toggle('lit', i < n));
 }
 
-const onScroll = () => { if (motion) lift(); step(); light(); };
-addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', onScroll);
-onScroll();
+// One update per frame, however many scroll events arrive
+let queued = false;
+const update = () => { queued = false; if (motion) lift(); step(); light(); };
+const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+const remeasure = () => { measure(); lastP = lastLit = undefined; schedule(); };
+addEventListener('scroll', schedule, { passive: true });
+addEventListener('resize', remeasure, { passive: true });
+// Fonts and anything else that changes the page's height move the sections without a resize
+new ResizeObserver(remeasure).observe(document.body);
+measure();
+update();
 
 // Demos. All values are samples; the markup holds the starting state.
 const clean = document.querySelector('#winfastcleaner .pv');

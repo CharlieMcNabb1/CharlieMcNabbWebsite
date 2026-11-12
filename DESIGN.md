@@ -292,10 +292,10 @@ The page reads top to bottom: nav band, hero, stage, About, footer.
 
 - **Wrap:** content capped at 1408px with 24px gutters (nav, stage, About, footer).
 - **Nav band:** 72px tall on black (64px under 720px), extended edge to edge with a spread box-shadow and clip-path. Wordmark, section links (hidden under 720px), then LinkedIn and a solid GitHub button. It scrolls away.
-- **Hero:** with motion and JavaScript, 320vh tall with a 100vh sticky frame. Over the first half of its scroll the lid opens (eased with a cubic out); over the second half the laptop scales about the display's centre until the display covers the viewport by 10% and squares up to the camera. The headline overlays the scene and fades out over the first 12%. At rest (no motion or no JavaScript) the hero is one screen tall with the headline above an open laptop.
-- **Laptop size:** `min(84vw, 80vh, 880px)` wide, lid aspect 1.545, with room below for the deck.
+- **Hero:** with motion and JavaScript, 320svh tall with a 100svh sticky frame (vh where svh is unsupported). svh, the viewport with the mobile browser bars showing, keeps the frame fully visible and steady as the bars hide; site.js measures progress against the frame's own height, not `innerHeight`, for the same reason. Over the first half of its scroll the lid opens (eased with a cubic out); over the second half the laptop scales about the display's centre until the display covers the viewport by 10% and squares up to the camera. The headline overlays the scene and fades out over the first 12%. At rest (no motion or no JavaScript) the hero is one screen tall with the headline above an open laptop.
+- **Laptop size:** `min(84vw, 80svh, 880px)` wide (80vh without svh support), lid aspect 1.545, with room below for the deck.
 - **Stage:** below the pin breakpoint the three projects stack with 96px padding (72px under 720px), hairlines between them and the demo 48px under the text.
-- **Pinned stage:** at least 1024px wide and 720px tall, with JavaScript. The stage is 490vh with a sticky 100vh frame: a 64px tab row on a hairline, then the projects stacked in place, one shown at a time. Each project is a 6fr/5fr grid with a 72px gap, demo left and text right. With motion, the stage starts 100vh early (overlapping the hero by one screen) so the first demo appears where the display was, and it fades in once the stage is live.
+- **Pinned stage:** at least 1024px wide and 720px tall, with JavaScript. The stage is 490svh with a sticky 100svh frame: a 64px tab row on a hairline, then the projects stacked in place, one shown at a time. Each project is a 6fr/5fr grid with a 72px gap, demo left and text right. With motion, the stage starts 100svh early (overlapping the hero by one screen) so the first demo appears where the display was, and it fades in once the stage is live.
 - **About:** a 16px inset column (8px under 720px) of two 12px panels with a 16px gap: the statement on white, then the Mist links panel.
 - **Footer:** black, 48px top and 24px bottom. Links, then the name 64 to 176px below.
 
@@ -306,6 +306,8 @@ Spacing steps in use: 4, 8, 12, 16, 24, 32, 48, 72 and 96px. Text columns are ca
 Surfaces are flat and separated by tone and hairlines. Depth exists in two places, both in CSS 3D:
 
 - **The laptop:** a `preserve-3d` model under 1800px perspective. The lid hinges from its bottom edge (-90deg shut, +6deg past upright when open, squaring up during the zoom), the deck lies flat behind it with a keyboard drawn as repeating gradients and an outlined trackpad, and a front lip stands up from the deck's near side. Only the lid's inner face shows the display (`backface-visibility: hidden`). Lid and deck carry a faint white hairline and a vertical shell gradient.
+
+  **The No Crossing Planes Rule.** No two planes of the laptop may cross, counting each layer's painted overflow. Chrome depth-sorts a `preserve-3d` scene by splitting any layer that crosses another's plane, and its software compositor (used when the GPU is off or blocklisted, and in headless Chrome) drops some of the split tiles, leaving holes. So the face clips its contents (`overflow: hidden`), keeping the screen glow off the lid's edge planes, and the deck starts 1.2 `--t` in front of the hinge, past where the face's plane meets it (at most 1.11 `--t` with the lid leant back 6deg).
 - **The tilted demos (pinned stage only):** each demo panel arrives centred with `perspective(1600px) rotateX(10deg) scale(1.04)`, then moves to its column with `rotateY(11deg) rotateX(2deg)`. Its near edge is drawn with a stack of five 1px offset box-shadows in falling greys, standing in for panel thickness.
 
 The display glow is a 115deg pink to purple gradient whose opacity follows the lid opening and falls to zero over the first 40% of the zoom.
@@ -323,17 +325,17 @@ Lines are 1px solid hairlines: Rule on light, Rule Dark on black. Bullets are 8p
 - **Outline:** no fill, inherited text colour. Border is Rule on light surfaces and Rule Dark on black; hover brings it to the text colour.
 - **Solid:** black with white text on light surfaces (hover `#323232`); Paper with black text on black (hover `#d4d4d4`). One solid button per group at most.
 - **Active / Focus:** active scales to 0.98 (off under reduced motion). Transitions run 160ms on the shared easing. Focus is a 2px outline in the current text colour, 3px off.
-- **In a demo:** 36px tall with 16px padding (the Connect toggle).
+- **In a demo:** 36px tall with 16px padding (the Connect toggle); 44px on touch screens.
 - **Note:** where an action is missing, a 44px line of Paper 3 text with a lock icon ("Source is private"). Not a control.
 
 ### Navigation
-- **Nav band:** 15px links on black with a 44px hit height; hover is Paper 2.
+- **Nav band:** 15px links on black with a 44px hit height (the wordmark too); on touch screens the section links are also at least 44px wide. Hover is Paper 2.
 - **Project tabs:** pinned stage only. 15px Paper 3 text on a 64px line with a 32px gap; hover and current (`aria-current`) are Paper, and current gets the 1px Paper underline. Clicking a tab scrolls just past that project's 30% mark so it arrives with its text showing.
 - **Footer links:** 15px Paper 2, hover Paper, 44px hit height.
 - **Skip link:** white with black text, 8px corners, top left on focus.
 
 ### Laptop (signature)
-Decorative and `aria-hidden`. Lid (shell gradient, display inset 2.2% / 1.6% / 3%), deck (keys, trackpad), front lip. Driven by custom properties `--open`, `--zoom`, `--s` and `--fade`, set by site.js from the hero's scroll progress. Defaults are lid open, no zoom.
+Decorative and `aria-hidden`. Lid (shell gradient, display inset 2.2% / 1.6% / 3%), deck (keys, trackpad), front lip. Driven by custom properties `--open`, `--zoom`, `--scale` and `--fade`, set by site.js from the hero's scroll progress. `--scale` is the zoom's current scale (the cover scale raised to `--zoom`), computed in JS because CSS `pow()` is too new for older mobile browsers, which would drop the whole transform. Defaults are lid open, no zoom.
 
 ### Text shimmer
 Applied to `.reveal` elements (h1, hero lede, Mist heading and paragraph, footer name) and to each project's h2, paragraphs and list. The text is clipped to a 100deg gradient (current colour, then pink at 42%, purple at 52%, transparent at 62%) sized 300% wide; it starts showing the transparent end and slides over 1300ms to the solid current colour, staggered 110ms per line. It runs once, when an IntersectionObserver sees 20% of the element or when a pinned project opens.
@@ -350,9 +352,9 @@ A working sample of the app's interface inside a `figure`.
 - **Caption:** 13px Paper 3 below the panel, beginning "Fig. n · Illustration with sample values", then what to operate.
 
 The three panels:
-- **Cleaner rows:** five 40px Fill Dark rows, 8px corners, 4px gap, each a label wrapping a native checkbox, a status dot, a name and a mono size. Unticking dims the row and dot to Paper 3 and re-adds the total.
-- **Refresh rate:** a four-part radio track (Fill Dark, 8px, 4px padding) with 36px segments at 4px. Selected is Paper with black text. Choosing one rewrites the stream figure. Connect toggles to Disconnect (`aria-pressed`) and Paired to Streaming.
-- **Reactor terminal:** all Fragment Mono. Efficiency figure, a 4px meter, a two-column reading list over a hairline and a full-width range input for the control rods. Every 500ms, once 1.2 seconds have passed since the last input, the controller steps the rods toward 42: by 4 when more than 8 away ("Coarse"), otherwise by 1 ("Fine-tune").
+- **Cleaner rows:** five 40px Fill Dark rows (44px on touch screens), 8px corners, 4px gap, each a label wrapping a native checkbox, a status dot, a name and a mono size. Unticking dims the row and dot to Paper 3 and re-adds the total.
+- **Refresh rate:** a four-part radio track (Fill Dark, 8px, 4px padding) with 36px segments (44px on touch screens) at 4px. Selected is Paper with black text. Choosing one rewrites the stream figure. Connect toggles to Disconnect (`aria-pressed`) and Paired to Streaming.
+- **Reactor terminal:** all Fragment Mono. Efficiency figure, a 4px meter, a two-column reading list over a hairline and a full-width range input for the control rods (44px tall on touch screens). Every 500ms, once 1.2 seconds have passed since the last input, the controller steps the rods toward 42: by 4 when more than 8 away ("Coarse"), otherwise by 1 ("Fine-tune").
 
 ### Pinned project sequence
 For each project: the demo arrives centred over the empty text column, tilted up. At 30% of that project's share of the stage scroll it slides left over 900ms and turns toward the text; the text shimmers in; the buttons fade in over 600ms after a 600ms delay. Projects cross-fade over 400ms.
@@ -360,6 +362,8 @@ For each project: the demo arrives centred over the empty text column, tilted up
 ## Motion
 
 One easing curve, `cubic-bezier(0.22, 1, 0.36, 1)`. State changes 160ms, meter 300ms, statement words 400ms, project cross-fade 400ms, stage fade 500ms, button fade 600ms, demo slide and turn 900ms, shimmer 1300ms. Smooth scrolling is on with motion.
+
+Scroll effects update at most once per animation frame, from a passive scroll listener. Layout is measured only when the page or viewport changes size (a resize listener and a ResizeObserver on the body), never while scrolling, and the hero skips restyling once its progress stops changing.
 
 Under `prefers-reduced-motion: reduce`: the hero is not pinned and the laptop rests open, there is no shimmer, the statement is not split into words, and transitions on the meter and press scale are off.
 
@@ -376,7 +380,8 @@ Under `prefers-reduced-motion: reduce`: the hero is not pinned and the laptop re
 - **Do** use 8px corners for controls and 12px for panels, with 1px hairlines.
 - **Do** set large type in Host Grotesk at weight 300 with negative tracking.
 - **Do** keep hidden start states inside `prefers-reduced-motion: no-preference`.
-- **Do** keep page-level links and buttons at a 44px hit height.
+- **Do** keep page-level links and buttons at a 44px hit height, and every control at least 44px on touch screens (`pointer: coarse`).
+- **Do** keep hover purely decorative, and put hover on controls that are tapped in place (demo rows, segments, buttons on black) inside `@media (hover: hover)` so the colour doesn't stick after a tap.
 
 ### Don't:
 - **Don't** use pink or purple as a button, link, border, hover or resting text colour.
